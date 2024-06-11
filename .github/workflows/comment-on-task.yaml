@@ -5,13 +5,13 @@ on:
 jobs:
   create-comment-in-asana-task-job:
     runs-on: ubuntu-latest
-    name: Create a comment in Asana Task
+    name: Comment on Asana Task
     steps:
       - name: Create a comment
         uses: Asana/comment-on-task-github-action@v1.2
         id: createComment
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
-          comment-text: "{{PR_NAME}} is {{PR_STATE}}: {{PR_URL}}"
+          comment-text: "Your comment"
       - name: Get status
         run: echo "Status is ${{ steps.createComment.outputs.status }}"
