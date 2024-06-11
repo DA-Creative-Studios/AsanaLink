@@ -3,4 +3,4 @@ Asana link with github. Attempt to merge Github with a project management workfl
 
 Creating a pull request using Asanalink branch
 
-Jun 11 - Testing to see if code edits are recognized in asana when making a pull request on Github. 
+Jun 11 - Testing this again.
