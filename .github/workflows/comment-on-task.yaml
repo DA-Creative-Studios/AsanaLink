@@ -1,24 +1,17 @@
 on:
-  issue_comment:
-    types: [created, edited]
+  pull_request:
+    types: [opened, closed, reopened]
 
 jobs:
-  add-comment-to-asana:
+  create-comment-in-asana-task-job:
     runs-on: ubuntu-latest
-    name: Add Comment to Asana Task
+    name: Create a comment in Asana Task
     steps:
-      - name: Add comment to Asana task
-        env:
-          ASANA_SECRET: ${{ secrets.ASANA_SECRET }}
-          COMMENT_BODY: ${{ github.event.comment.body }}
-          PR_URL: ${{ github.event.issue.html_url }}
-          PR_NUMBER: ${{ github.event.issue.number }}
-          PR_TITLE: ${{ github.event.issue.title }}
-          PR_STATE: ${{ github.event.issue.state }}
-        run: |
-          curl -X POST https://app.asana.com/api/1.0/tasks/<TASK_ID>/stories \
-          -H "Authorization: Bearer $ASANA_SECRET" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "text": "New comment on PR #'"$PR_NUMBER"' (state: '"$PR_STATE"'): '"$PR_URL"' \n\n'"$COMMENT_BODY"'"
-              }'
+      - name: Create a comment
+        uses: Asana/comment-on-task-github-action@v1.2
+        id: createComment
+        with:
+          asana-secret: ${{ secrets.ASANA_SECRET }}
+          comment-text: "{{PR_NAME}} is {{PR_STATE}}: {{PR_URL}}"
+      - name: Get status
+        run: echo "Status is ${{ steps.createComment.outputs.status }}"
